@@ -1,8 +1,10 @@
 {
-  "name": "vibiz-cli",
+  "name": "@vibiz/cli",
   "version": "0.1.0",
   "description": "Install Vibiz for Claude Code in one command — npx vibiz",
-  "bin": "./bin/vibiz.js",
+  "bin": {
+    "vibiz": "./bin/vibiz.js"
+  },
   "files": [
     "bin",
     "README.md"
