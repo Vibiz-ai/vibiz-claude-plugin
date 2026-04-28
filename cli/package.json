@@ -2,9 +2,7 @@
   "name": "vibiz",
   "version": "0.1.0",
   "description": "Install Vibiz for Claude Code in one command — npx vibiz",
-  "bin": {
-    "vibiz": "./bin/vibiz.js"
-  },
+  "bin": "./bin/vibiz.js",
   "files": [
     "bin",
     "README.md"
