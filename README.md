@@ -2,11 +2,21 @@
 
 Generate ads, funnels, ICPs, social posts, and full Meta campaigns from inside Claude Code. Drafts a marketing post about every commit you make.
 
+## Install
+
+One-time, add the marketplace:
+
 ```
-/plugin install Vibiz-ai/vibiz
+/plugin marketplace add Vibiz-ai/vibiz-claude-plugin
 ```
 
-Then authenticate once:
+Then install the plugin:
+
+```
+/plugin install vibiz@vibiz
+```
+
+Authenticate once:
 
 ```
 /mcp
@@ -46,15 +56,17 @@ This plugin exposes 40 Vibiz MCP tools to Claude Code:
 - **Analytics** — top posts, daily metrics, best posting times
 - **Meta Ads (Zernio)** — list / get / pause / resume / duplicate / delete campaigns + creatives, boost a post, launch a standalone ad
 
-## Install (manual / dev)
+## Develop locally
 
-If you want to develop on this plugin locally:
+If you want to hack on this plugin locally:
 
 ```bash
-git clone https://github.com/Vibiz-ai/vibiz ~/.claude/plugins/vibiz
+git clone https://github.com/Vibiz-ai/vibiz-claude-plugin
+/plugin marketplace add ./vibiz-claude-plugin
+/plugin install vibiz@vibiz
 ```
 
-…and Claude Code will pick it up on next start.
+Re-running `/plugin marketplace update` after pulling will refresh installed copies.
 
 ## Skip the post nudge for a commit
 
