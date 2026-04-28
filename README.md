@@ -3,7 +3,7 @@
 Generate ads, funnels, ICPs, social posts, and full Meta campaigns from inside Claude Code. Drafts a marketing post about every commit you make.
 
 ```
-/plugin install Vibiz-ai/vibiz-claude
+/plugin install Vibiz-ai/vibiz
 ```
 
 Then authenticate once:
@@ -51,7 +51,7 @@ This plugin exposes 40 Vibiz MCP tools to Claude Code:
 If you want to develop on this plugin locally:
 
 ```bash
-git clone https://github.com/Vibiz-ai/vibiz-claude ~/.claude/plugins/vibiz
+git clone https://github.com/Vibiz-ai/vibiz ~/.claude/plugins/vibiz
 ```
 
 …and Claude Code will pick it up on next start.
