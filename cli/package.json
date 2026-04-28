@@ -1,0 +1,32 @@
+{
+  "name": "vibiz",
+  "version": "0.1.0",
+  "description": "Install Vibiz for Claude Code in one command — npx vibiz",
+  "bin": {
+    "vibiz": "./bin/vibiz.js"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "vibiz",
+    "claude-code",
+    "claude-code-plugin",
+    "marketing",
+    "ads",
+    "social-media",
+    "mcp"
+  ],
+  "author": "Vibiz <hi@vibiz.ai>",
+  "homepage": "https://vibiz.ai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vibiz-ai/vibiz-claude-plugin.git",
+    "directory": "cli"
+  },
+  "license": "MIT"
+}
