@@ -1,0 +1,17 @@
+{
+  "description": "Vibiz: detect successful `git commit` calls and gently suggest /vibiz:post",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/post-commit-suggest.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "vibiz": {
+      "type": "http",
+      "url": "https://www.vibiz.ai/api/mcp"
+    }
+  }
+}

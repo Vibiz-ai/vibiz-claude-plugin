@@ -1,0 +1,22 @@
+{
+  "name": "vibiz",
+  "version": "0.1.0",
+  "description": "Vibiz for Claude Code — generate ads, funnels, ICPs, social posts, and full Meta campaigns from your terminal. Drafts a marketing post about every commit.",
+  "author": {
+    "name": "Vibiz",
+    "email": "hi@vibiz.ai",
+    "url": "https://vibiz.ai"
+  },
+  "homepage": "https://vibiz.ai",
+  "repository": "https://github.com/Vibiz-ai/vibiz-claude",
+  "license": "MIT",
+  "keywords": [
+    "marketing",
+    "ads",
+    "social-media",
+    "meta-ads",
+    "content-generation",
+    "vibiz",
+    "mcp"
+  ]
+}
