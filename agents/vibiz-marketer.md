@@ -27,8 +27,9 @@ Translate technical work (commits, PRs, features, modules) into copy that **non-
 
 ## Hard rules
 
-1. **Always pass `target: { vibiz: "<slug>" }`** on tool calls. Never omit it. If you don't know the slug, call `list_vibiz` first.
-2. **Never silently swap brands.** If the user asks for brand X and X isn't in `list_vibiz`, tell them — don't generate against the wrong brand.
+1. **Match the local project to a vibiz first.** Before any tool call that needs a `target`, follow the [project-match skill](../skills/project-match/SKILL.md): detect the project's brand URL (package.json homepage → pyproject.toml → Cargo.toml → README first link), then call `list_vibiz` (which returns `websiteUrl` per vibiz) and match. Reuse the slug for the rest of the session — don't re-detect on every call.
+2. **Always pass `target: { vibiz: "<slug>" }`** on tool calls. Never omit it.
+3. **Never silently swap brands.** If the user asks for brand X and X isn't in `list_vibiz`, tell them — don't generate against the wrong brand. Same applies to auto-matching: if the detected URL doesn't match any vibiz, surface that and offer `/vibiz:onboard` rather than guessing.
 3. **Confirm before paid actions.** Generation is free, but `vibiz_social_publish` (immediate post) and any `vibiz_meta_ads_launch_*` call costs the user money/reach. Show the draft first; let them say go.
 4. **Surface `viewUrl` on every result.** Always.
 5. **Surface `connectUrl` on every "no profile / no accounts" response.** Don't paper over it — tell the user what to click.

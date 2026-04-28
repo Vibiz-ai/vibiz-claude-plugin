@@ -1,23 +1,59 @@
 ---
-description: Check Vibiz MCP connection and list available vibizes (brands)
+description: Check Vibiz MCP connection, match this project to a vibiz, list available brands
 ---
 
 # /vibiz:status
 
-Check whether the Vibiz MCP server is connected and authenticated, and show the list of vibizes (brands) the user can act on.
+Verify the MCP is authenticated and try to **match the current local project** to one of the user's vibizes. This is usually the first command the user runs.
 
 ## Steps
 
-1. Try calling the Vibiz MCP `list_vibiz` tool.
-2. If it returns a list, format it as a table with `name` and `slug`. Tell the user they can pass `target: { vibiz: "<slug>" }` to any Vibiz tool to scope it to that brand.
-3. If the call fails with an auth error (`Unauthorized`, `not authenticated`, or similar):
-   - Tell the user to run `/mcp`, pick `vibiz`, choose **Authenticate**, and complete the browser login.
-   - Then re-run `/vibiz:status`.
-4. If the call fails with a 404 or "no vibizes":
-   - Tell the user they don't have any vibizes yet. Suggest running `/vibiz:onboard` to create one from this repo, or visiting https://vibiz.ai to sign up.
-5. Keep the response short — 5-10 lines max.
+1. **Try `list_vibiz`.** If it fails with `Unauthorized` / `not authenticated`:
+   - Tell the user to run `/mcp`, pick `vibiz`, choose **Authenticate**, finish the browser login, then re-run `/vibiz:status`.
+   - Stop here — do nothing else.
+2. **Detect this project's brand URL** using the [project-match skill](../skills/project-match/SKILL.md):
+   - Try `package.json` `homepage`, then `pyproject.toml` / `Cargo.toml` `homepage`, then the first non-badge non-github link in the README.
+   - Skip private / local URLs.
+3. **Match** the detected URL against each vibiz's `websiteUrl` from step 1, after normalizing both sides (lowercase, strip protocol/www/trailing-slash, host + first path segment only).
+4. **Report.** Output is one of:
 
-## Notes
+   **A. MCP not authed**
+   ```
+   ❌ Vibiz MCP — not authenticated. Run /mcp → vibiz → Authenticate.
+   ```
 
-- Do NOT proceed silently if the MCP isn't connected. Always surface the auth step clearly.
-- This command is read-only. It must NEVER create, post, or spend.
+   **B. No vibizes at all**
+   ```
+   ✓ Vibiz MCP — connected
+   ⚠ You don't have any vibizes yet. Run /vibiz:onboard to create one from this project, or sign up at https://vibiz.ai.
+   ```
+
+   **C. Project URL detected, exact match found**
+   ```
+   ✓ Vibiz MCP — connected
+   ✓ Matched this project (<detected-url>) → vibiz "<name>" (slug: <slug>)
+      Subsequent /vibiz commands will scope to this vibiz automatically.
+   Other vibizes available: <name1>, <name2>, …
+   ```
+
+   **D. Project URL detected, NO match**
+   ```
+   ✓ Vibiz MCP — connected
+   ⚠ This project (<detected-url>) is not yet onboarded as a vibiz.
+   Available vibizes: <name1>, <name2>, …
+   Run /vibiz:onboard to create a new one for this project, or pick one of the above by name.
+   ```
+
+   **E. No detectable URL**
+   ```
+   ✓ Vibiz MCP — connected
+   Available vibizes: <name1>, <name2>, …
+   I couldn't auto-detect a brand URL from this repo (no package.json homepage, no obvious link in README). Tell me which vibiz to use, or run /vibiz:onboard with a URL.
+   ```
+5. **Remember the matched slug for this session** — quote it explicitly in your message ("using vibiz `<slug>` for the rest of this session") so subsequent tool calls inherit the choice.
+
+## Hard rules
+
+- This command is read-only. Never call `vibiz_create_from_url` from `/vibiz:status` — that's `/vibiz:onboard`.
+- Never silently fall back to "the only vibiz" when matching produces zero results — surface the mismatch.
+- Keep the response under ~12 lines.

@@ -13,7 +13,7 @@ Generate a polished ad creative for the project in this repo. Pulls context from
    - If `$1` is `video` → use `vibiz_generate_ad_video`.
    - If `$1` is `image` (or omitted) → use `vibiz_generate_image`.
    - If `$1` is something else, treat it as the prompt override and default to image.
-2. **Pick the vibiz.** `list_vibiz` → single? use it. Multiple? ask. Zero? suggest `/vibiz:onboard`.
+2. **Pick the vibiz** via the [project-match skill](../skills/project-match/SKILL.md): detect this project's brand URL and match against `list_vibiz` by `websiteUrl`. Exactly one match → use it. Multiple → ask. Zero → suggest `/vibiz:onboard` (do NOT silently fall back).
 3. **Build the prompt.** Unless the user passed an override (`$2` or `$1` when not image/video), generate one from:
    - First paragraph of `README.md` (skip badges + headers)
    - The last 3 commit subjects (`git log -3 --format='%s'`)

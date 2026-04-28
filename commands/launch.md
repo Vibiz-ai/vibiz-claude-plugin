@@ -8,8 +8,8 @@ Run a full Vibiz onboarding flow: detect the project URL → create a vibiz → 
 
 ## Steps
 
-1. **Check status.** Run the equivalent of `/vibiz:status` silently. If MCP is not authed, halt and tell the user to run `/mcp`.
-2. **Onboard.** If `list_vibiz` is empty for this repo's URL, run the `/vibiz:onboard` flow. If the URL already maps to an existing vibiz, skip to step 3.
+1. **Check status + match.** Run the equivalent of `/vibiz:status` silently — auth check + auto-match this project to an existing vibiz via the [project-match skill](../skills/project-match/SKILL.md). If MCP is not authed, halt and tell the user to run `/mcp`.
+2. **Onboard if no match.** If matching produced zero vibizes for this project's URL, run the `/vibiz:onboard` flow (with explicit confirmation). If the URL matched an existing vibiz, reuse it — skip to step 3.
 3. **Show what was discovered.**
    - `mcp__vibiz__vibiz_list_icps({ target: { vibiz: "<slug>" } })` → format as `Name | Title | Pain points (truncated)`.
    - `mcp__vibiz__vibiz_list_offers(...)` → format as `Title | Price | Type`.

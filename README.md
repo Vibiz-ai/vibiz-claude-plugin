@@ -44,6 +44,10 @@ Pick `vibiz` → **Authenticate** → done. No URL, no API key, no token paste.
 
 After every successful `git commit`, the plugin checks if the change is post-worthy and gently offers `/vibiz:post`. Skips merge commits, security fixes, boring chores (`chore:` / `build:` / `ci:` / `style:` / `docs:` / `test:`), tiny diffs (<5 lines), and anything tagged `[skip-vibiz]` or `[no-post]` in the commit body.
 
+**Auto-match local project ⇄ vibiz**
+
+The first time you run any `/vibiz:*` command in a repo, the plugin reads `package.json` `homepage` (or `pyproject.toml` / `Cargo.toml` / the first non-badge link in your README) and matches that URL against the `websiteUrl` of every vibiz in your workspace group. If exactly one vibiz matches, every subsequent command is automatically scoped to it — no slug to type, no picker to dismiss. If nothing matches, you're invited to onboard the project; if multiple match, you're asked which one.
+
 ## What Vibiz is
 
 [Vibiz](https://vibiz.ai) is an AI marketing platform — ad creatives, landing pages, social publishing, and Meta Ads campaigns, all driven from a brand kit it scrapes from any URL.

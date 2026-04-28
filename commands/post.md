@@ -18,8 +18,9 @@ Turn a code change into a marketing-ready social post. Reads the latest commit (
    - Commit subject matches `/^(chore|build|ci|style|docs)(\(|:)/i` (boring infra)
    - Commit subject contains: `password`, `secret`, `token`, `cve`, `vuln`, `xss`, `sqli`, `auth bypass` (security/sensitive)
    - Commit body has `[skip-vibiz]` or `[no-post]`
-3. **Pick the vibiz.**
-   - Call `mcp__vibiz__list_vibiz`. If exactly one, use it. If multiple, ask the user which one. If zero, suggest `/vibiz:onboard`.
+3. **Pick the vibiz** via the [project-match skill](../skills/project-match/SKILL.md):
+   - Detect this project's brand URL (package.json homepage → pyproject → Cargo → README first link).
+   - Call `list_vibiz` and match by `websiteUrl`. If exactly one match, use it silently. If multiple matches, ask the user which one. If zero matches, surface that and suggest `/vibiz:onboard` (do NOT silently fall back to "the only vibiz" or "the first vibiz").
 4. **Draft the post.** Compose 2-3 short copy variants (Twitter/X-friendly: under 280 chars each) that:
    - Lead with the user-visible benefit ("now you can …", "we just shipped …", "fixed the X annoyance"), NOT internal jargon
    - Avoid file paths, function names, library versions
