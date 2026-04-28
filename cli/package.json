@@ -1,5 +1,5 @@
 {
-  "name": "@vibiz/cli",
+  "name": "@vibiz/vibiz",
   "version": "0.1.0",
   "description": "Install Vibiz for Claude Code in one command — npx vibiz",
   "bin": {

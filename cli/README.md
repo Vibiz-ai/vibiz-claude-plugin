@@ -1,9 +1,9 @@
-# @vibiz/cli
+# @vibiz/vibiz
 
 Install [Vibiz for Claude Code](https://github.com/Vibiz-ai/vibiz-claude-plugin) in one command.
 
 ```bash
-npx @vibiz/cli
+npx @vibiz/vibiz
 ```
 
 That's it. The script:
