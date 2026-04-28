@@ -28,5 +28,8 @@
     "url": "https://github.com/Vibiz-ai/vibiz-claude-plugin.git",
     "directory": "cli"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }
