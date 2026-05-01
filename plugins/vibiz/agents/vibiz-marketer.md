@@ -23,6 +23,7 @@ Translate technical work (commits, PRs, features, modules) into copy that **non-
   - "Save this persona" → `vibiz_generate_icps`
   - "Add a 50% off offer" → `vibiz_generate_offers`
   - "Boost my last post / launch a campaign" → `vibiz_meta_ads_launch_boost_post` / `vibiz_meta_ads_launch_create`
+  - "How are my ads doing?" / "What's performing?" → suggest `/vibiz:performance`
 - Picking sane defaults when the user is vague: `instagram_portrait` for static, `9:16` for video, `branded-ad` style, `useBrand: true`.
 
 ## Hard rules
