@@ -1,11 +1,89 @@
 ---
 name: vibiz-mcp
-description: How to use the Vibiz MCP server from Claude Code — the 40 tools, the target.vibiz arg, and the OAuth auth flow.
+description: How to use the Vibiz MCP server from Claude Code — the 40 tools, the target.vibiz arg, the OAuth auth flow, and the post-media-to-social workflow.
 ---
 
 # Using the Vibiz MCP
 
 The Vibiz MCP server is auto-configured by this plugin at `https://www.vibiz.ai/api/mcp`. After `/plugin install`, the user authenticates once via `/mcp` → `vibiz` → **Authenticate**, and from then on every Vibiz tool call is scoped to their workspace group via OAuth.
+
+## Quick start: post an image or video
+
+The 95% workflow is `list_vibiz → generate → poll → publish`. Four tools, one `runId` threaded through.
+
+### One-time setup
+
+1. `/plugin install vibiz` — auto-configures the MCP at `https://www.vibiz.ai/api/mcp`.
+2. `/mcp` → `vibiz` → **Authenticate** → browser login (Clerk → WorkOS).
+3. Connect a social account. If `vibiz_social_list_accounts` is empty, it returns a `connectUrl` — open it once to link IG/TikTok/etc.
+
+No API keys to manage. OAuth scopes the token to the user's workspace group.
+
+### 1. Get the brand slug
+
+```
+list_vibiz  →  [{ name, slug, websiteUrl, logoUrl }]
+```
+
+Pick the slug. This is the only ID you ever need to remember — pass it as `target.vibiz` on every call.
+
+### 2. Generate the media
+
+Image:
+```ts
+vibiz_generate_image({
+  target: { vibiz: "<slug>" },
+  prompt: "...",
+  platform: "instagram_portrait",
+})
+// → { adId, runId, statusUrl, mcpGenerationUrl, viewUrl }
+```
+
+Video:
+```ts
+vibiz_generate_ad_video({
+  target: { vibiz: "<slug>" },
+  prompt: "...",
+  videoDuration: "6s",
+})
+// → { adId, runId, statusUrl, viewUrl }
+```
+
+### 3. Poll for the final URL
+
+One unified status tool. Feed it `runId`, get the media URL when ready:
+
+```ts
+vibiz_generation_status({ runId: "run_xyz123" })
+// → { status, imageUrl?, videoUrl?, viewUrl, pollInterval }
+```
+
+Poll every `pollInterval` seconds until `status === "completed"`. **Images: 10–30s. Videos: 1–3 min — don't time out at 30s.**
+
+> ⚠️ Use **`runId`** for polling — NOT `adId`, NOT `mcpGenerationUrl`. Those are different identifiers and the status tool only accepts `runId`.
+
+### 4. Publish
+
+```ts
+vibiz_social_publish({
+  target: { vibiz: "<slug>" },
+  content: "post copy here",
+  mediaUrls: ["<imageUrl or videoUrl from step 3>"],
+  platforms: [{ platform: "instagram", accountId: "<from social_list_accounts>" }],
+  scheduledFor: "2026-05-02T15:00:00Z", // optional; omit = post now
+})
+```
+
+If the user has no Late profile connected yet, `vibiz_social_list_accounts` returns a `connectUrl` — surface it, don't paper over it.
+
+### ID mental model
+
+| What | ID type | Where it comes from | Use for |
+|---|---|---|---|
+| Brand | `slug` | `list_vibiz` | `target.vibiz` on every call |
+| Generation job | `runId` | `vibiz_generate_*` response | `vibiz_generation_status` polling |
+| Final media | `imageUrl` / `videoUrl` | `vibiz_generation_status` (when completed) | `mediaUrls` in publish |
+| Social destination | `accountId` | `vibiz_social_list_accounts` | `platforms[].accountId` in publish |
 
 ## The `target` argument is the key
 
@@ -36,6 +114,7 @@ The slug comes from `list_vibiz`. **Always call `list_vibiz` first** when you do
 - `vibiz_generate_qualification_funnel` — lead-qual funnel
 - `vibiz_generate_icps` / `vibiz_list_icps` — create / read ideal customer profiles
 - `vibiz_generate_offers` / `vibiz_list_offers` — create / read sales offers
+- `vibiz_generation_status` — unified polling for any generate-* run; takes `runId`, returns final media URL
 
 ### Social (Late API)
 - `vibiz_social_list_accounts`, `vibiz_social_list_posts`, `vibiz_social_publish`
@@ -61,6 +140,8 @@ The slug comes from `list_vibiz`. **Always call `list_vibiz` first** when you do
 4. **Surface `connectUrl`** on every "no profile / no accounts" response. Don't paper over it.
 5. **Confirm before paid actions.** Generation is free. `vibiz_social_publish` and any `vibiz_meta_ads_launch_*` cost money / reach. Show drafts first; let the user say go.
 6. **Refuse security-sensitive commits as marketing material.** Subjects matching `password`, `secret`, `token`, `cve`, `vuln`, `xss`, `sqli`, `auth bypass` — don't post about them.
+7. **Use `runId` for polling** — not `adId`, not `mcpGenerationUrl`. Common trap.
+8. **Don't time out video polling at 30s** — videos finish in 1–3 minutes.
 
 ## Auth troubleshooting
 
