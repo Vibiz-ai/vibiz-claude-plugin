@@ -51,6 +51,8 @@ The slug comes from `list_vibiz`. **Always call `list_vibiz` first** when you do
 - `vibiz_meta_ads_accounts_list`, `vibiz_meta_ads_accounts_get_connect_url`
 - `vibiz_meta_ads_campaigns_*` — list, get_tree, set_status, bulk_set_status, duplicate, delete
 - `vibiz_meta_ads_creatives_*` — list, get, get_analytics, set_status, delete
+
+> **Tip:** `/vibiz:performance` orchestrates the analytics + creatives + top_posts tools into a single performance report with image analysis and recommendations.
 - `vibiz_meta_ads_launch_boost_post`, `vibiz_meta_ads_launch_create`
 
 ## Behavioural rules — read before writing tool calls
