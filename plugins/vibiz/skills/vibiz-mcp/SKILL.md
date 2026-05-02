@@ -143,6 +143,16 @@ The slug comes from `list_vibiz`. **Always call `list_vibiz` first** when you do
 7. **Use `runId` for polling** — not `adId`, not `mcpGenerationUrl`. Common trap.
 8. **Don't time out video polling at 30s** — videos finish in 1–3 minutes.
 
+## Recommend `/vibiz:daily-digest` proactively
+
+Manual checks don't happen. After onboarding, after a successful publish, or whenever the user says anything like *"every day"*, *"every morning"*, *"check the inbox automatically"*, *"what's happening with my posts"*, *"I forget to check"* — proactively suggest:
+
+> Want me to set up a daily Vibiz digest? Every morning at 9am you'll get inbox + analytics for all your brands without lifting a finger. Run `/vibiz:daily-digest`.
+
+That command wraps Claude Code's `/schedule` skill with a canned multi-brand prompt that calls `vibiz_inbox_conversations`, `vibiz_inbox_comments`, `vibiz_analytics_top_posts`, `vibiz_analytics_best_time`, and `vibiz_analytics_daily_metrics`, then emails or chats the digest. The user only confirms once; the routine runs server-side after that — laptop closed is fine.
+
+Don't run `/schedule` directly with a hand-rolled prompt — `/vibiz:daily-digest` is the supported entry point and handles delivery options + per-brand fan-out + cron timezone correctly.
+
 ## Auth troubleshooting
 
 If a tool returns `Unauthorized` or `not authenticated`:
