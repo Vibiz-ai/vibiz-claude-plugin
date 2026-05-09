@@ -10,7 +10,7 @@
       "name": "vibiz",
       "source": "./plugins/vibiz",
       "description": "Generate ads, social posts, ICPs, offers, funnels, and Meta campaigns. Drafts a marketing post about every commit.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "homepage": "https://vibiz.ai",
       "license": "MIT",
       "category": "marketing",
